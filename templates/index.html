@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Python Online IDE</title>
+    <link rel="stylesheet" href="/static/css/codemirror.min.css">
+</head>
+
+<body>
+    <textarea id="editor">print("Hello, world!")</textarea>
+    <input type="text" id="deps" placeholder="Dependencies (e.g., numpy requests)" />
+    <button onclick="runCode()">Run</button>
+    <pre id="output"></pre>
+
+    <script src="/static/js/codemirror.min.js"></script>
+    <script src="/static/js/python.min.js"></script>
+    <script>
+        const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+            mode: 'python',
+            lineNumbers: true
+        });
+
+        async function runCode() {
+            const code = editor.getValue();
+            const deps = document.getElementById("deps").value.split(" ").filter(x => x);
+            const response = await fetch("/run", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ code, dependencies: deps })
+            });
+            const data = await response.json();
+            document.getElementById("output").textContent = data.output || data.detail;
+        }
+    </script>
+</body>
+
+</html>
