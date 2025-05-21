@@ -86,8 +86,6 @@ def run(request: CodeRequest):
     except Exception:
         pass
     
-    print(request.code)
-    
     code_file = "/sandbox/run.py"
 
     # Write code to a temporary file and copy it into the container
