@@ -10,7 +10,7 @@
                 "main:app",
                 "--reload",
                 "--port",
-                "8000"
+                "80"
             ],
             "jinja": true,
             "env": {
