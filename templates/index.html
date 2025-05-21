@@ -4,34 +4,35 @@
 <head>
     <title>Python Online IDE</title>
     <link rel="stylesheet" href="/static/css/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/build.css">
 </head>
 
 <body>
-    <textarea id="editor">print("Hello, world!")</textarea>
-    <input type="text" id="deps" placeholder="Dependencies (e.g., numpy requests)" />
-    <button onclick="runCode()">Run</button>
-    <pre id="output"></pre>
+    <div id="main-container" class="container shadow-lg mt-5 p-4 rounded bg-white">
+        <h1 class="mb-4 text-center fw-bold" style="letter-spacing:0.03em;">Python Online IDE</h1>
 
-    <script src="/static/js/codemirror.min.js"></script>
-    <script src="/static/js/python.min.js"></script>
-    <script>
-        const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
-            mode: 'python',
-            lineNumbers: true
-        });
+        <div class="mb-3">
+            <label for="editor" class="form-label fw-semibold">Editor</label>
+            <textarea id="editor">print("Hello, world!")</textarea>
+        </div>
 
-        async function runCode() {
-            const code = editor.getValue();
-            const deps = document.getElementById("deps").value.split(" ").filter(x => x);
-            const response = await fetch("/run", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ code, dependencies: deps })
-            });
-            const data = await response.json();
-            document.getElementById("output").textContent = data.output || data.detail;
-        }
-    </script>
+        <div class="mb-3">
+            <label for="input_dependencies" class="form-label d-block mb-0">Dependencies</label>
+            <small class="form-text text-muted d-block mb-2">Whitespace-separated, can specify versions using "=="</small>
+            <input type="text" id="input_dependencies" class="form-control" placeholder="Dependencies (e.g., numpy requests==2.32.3 docker)" />
+        </div>
+
+        <button id="button_run" type="submit" class="btn btn-primary w-100">Run</button>
+
+        <h6 class="mt-4 mb-2">Console</h6>
+        <pre id="output_wrapper" class="mb-0"></pre>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="/static/js/codemirror.min.js" type="text/javascript"></script>
+    <script src="/static/js/python.min.js" type="text/javascript"></script>
+    <script src="/static/js/index.js" type="text/javascript"></script>
 </body>
 
 </html>

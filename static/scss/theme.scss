@@ -1,0 +1,17 @@
+@import "../bootstrap/scss/functions";
+
+$white: #ffffff;
+
+$light: #f5f7fa;
+$dark: #1e1e2f;
+$primary: #64da6c;
+$secondary: #2e2e60;
+$info: #ef9859;
+$success: #43d675;
+$warning: #ffd166;
+$danger: #ff4b5c;
+
+$bs-body-bg: var(--bs-dark);
+$bs-body-bg: #000;
+
+@import "../bootstrap/scss/bootstrap";
