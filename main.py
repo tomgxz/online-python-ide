@@ -2,9 +2,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from socket import SocketIO
 
-import uuid, docker, logging, tarfile, io, os, tempfile
+import uuid, docker, logging, tarfile, io, os, tempfile, sys
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -22,14 +21,22 @@ try:
     CLIENT.images.get("python-runner:latest")
     
 except docker.errors.ImageNotFound:
-    print("Image not found, building...")
     logger.warning("Docker image not found, building...")
     
-    CLIENT.images.build(
+    image_build_logs = CLIENT.api.build(
         path=".",
         dockerfile="python-runner.dockerfile",
-        tag="python-runner"
+        tag="python-runner",
+        decode=True
     )
+    
+    for chunk in image_build_logs:
+        if 'stream' in chunk:
+            logger.info("DOCKER:\t" + chunk['stream'].strip())
+            sys.stdout.flush()
+        elif 'error' in chunk:
+            logger.error("DOCKER:\t" + chunk['error'].strip())
+            sys.stdout.flush()
 
 
 class CodeRequest(BaseModel):

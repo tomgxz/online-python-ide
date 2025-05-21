@@ -1,1 +1,1 @@
-web: uvicorn main:app
+web: sh -c "dockerd & sleep 5 && python run_server.py

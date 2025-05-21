@@ -5,17 +5,8 @@
             "name": "FastAPI: Run Server",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "main:app",
-                "--reload",
-                "--port",
-                "80"
-            ],
+            "program": "${workspaceFolder}/run_server.py",
             "jinja": true,
-            "env": {
-                "PYTHONUNBUFFERED": "1"
-            }
         }
     ]
 }
