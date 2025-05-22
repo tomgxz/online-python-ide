@@ -1,0 +1,23 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [deployment]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Connect to home server and trigger deploy
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOME_SERVER_IP }}
+        username: ${{ secrets.HOME_SERVER_USER }}
+        key: ${{ secrets.HOME_SERVER_SSH_KEY }}
+        port: 2221
+        script: |
+          powershell -ExecutionPolicy Bypass -File "${{ secrets.REDEPLOY_SCRIPT }}"
